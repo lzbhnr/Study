@@ -1,12 +1,13 @@
 package Map;
 
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Map {
 
     public static void main(String[] args) {
-        LinkedHashMap linkedHashMap = new LinkedHashMap();
 
-        linkedHashMap.put("key","value");
+        ConcurrentHashMap hashMap = new ConcurrentHashMap();
+
+        hashMap.put("", "");
     }
 }
