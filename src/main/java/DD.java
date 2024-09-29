@@ -33,6 +33,7 @@ public class DD {
         }
         return false;
     }
+
     public boolean dfs(int i, int j, int index, boolean[][] tempArgs) {
         if ((i < 0 || i > args.length || j < 0 || j > args.length || tempArgs[i][j]) || index < aimStr.length() - 1) {
             return false;
@@ -45,10 +46,8 @@ public class DD {
         if (equal) {
             tempArgs[i][j] = true;
             index++;
-            if (dfs(i - 1, j, index, tempArgs)){
-                return false;
-            }
-            return  ||
+
+            return dfs(i - 1, j, index, tempArgs) ||
                     dfs(i + 1, j, index, tempArgs) ||
                     dfs(i, j - 1, index, tempArgs) ||
                     dfs(i, j + 1, index, tempArgs);
