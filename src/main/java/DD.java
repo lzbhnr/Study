@@ -13,7 +13,6 @@ public class DD {
 
     }
 
-
     private String aimStr;
     private char[][] args;
 
@@ -22,9 +21,9 @@ public class DD {
         this.args = args;
         int rows = args.length;
         int cols = args[0].length;
+        boolean[][] tempArgs = new boolean[args.length][args[0].length];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                boolean[][] tempArgs = new boolean[args.length][args[0].length];
                 boolean find = dfs(i, j, 0, tempArgs);
                 if (find) {
                     return true;
@@ -35,22 +34,26 @@ public class DD {
     }
 
     public boolean dfs(int i, int j, int index, boolean[][] tempArgs) {
-        if ((i < 0 || i > args.length || j < 0 || j > args.length || tempArgs[i][j]) || index < aimStr.length() - 1) {
+        if (i < 0 || i >= args.length || j < 0 || j >= args[0].length || index < aimStr.length() - 1) {
             return false;
         }
-
         boolean equal = args[i][j] == aimStr.charAt(index);
-        if (equal && index == aimStr.length() - 1) {
+        if (!equal) {
+            return false;
+        }
+        if (index == aimStr.length() - 1) {
             return true;
         }
         if (equal) {
             tempArgs[i][j] = true;
             index++;
 
-            return dfs(i - 1, j, index, tempArgs) ||
+            boolean r = dfs(i - 1, j, index, tempArgs) ||
                     dfs(i + 1, j, index, tempArgs) ||
                     dfs(i, j - 1, index, tempArgs) ||
                     dfs(i, j + 1, index, tempArgs);
+            tempArgs[i][j] = false;
+            return r;
 
         }
         return false;
