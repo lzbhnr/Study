@@ -1,14 +1,17 @@
 package Thread;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class D {
 
 
     public static void main(String[] args) {
 
-        int[] nums = {1, 2, 4, 9};
-        int x = 2533;
+        int[] nums = {2};
+        int x = 222;
         int result = getMax(nums, x);
         System.out.println(result);
 
@@ -79,50 +82,48 @@ public class D {
             temp[nums[i]] = true;
         }
         String result = "";
-        for (int i = 0; i < aimStr.length(); i++) {
+
+        int value = 0;
+        int i = 0;
+        for (; i < aimStr.length(); i++) {
             // i 这个位置是否有数
             // value 代表位置i的值
-            int value = aimStr.charAt(i) - '0';
-
+            value = aimStr.charAt(i) - '0';
             if (temp[value] && i != aimStr.length() - 1) {
                 //  if (temp[value] ) {
                 result += value;
             } else {
-                int res = findNexMin(value);
-                if (res > -1 && i != aimStr.length() - 1) {
-                    result += res;
-                    int leftLength = aimStr.length() - result.length();
-                    return Integer.valueOf(result + repeat(nums[nums.length - 1], leftLength));
-                } else {
-                    // 没有找到更小的值。往前回溯
-                    for (int j = i; j >= 0; j--) {
-                        // 代表的是 前一个字符。
-                        int tempValue = aimStr.charAt(j) - '0';
-                        // 比 第 j 个 数字小的索引。
-                        int nextIndex = findNexMin(tempValue);
-                        if (nextIndex > -1) {
-                            // 往前回溯
-                            // 往前找，找到j+1个数值
-                            result = result.substring(0, j);
-                            // 找到了
-                            result += nextIndex;
-                            int leftLength = aimStr.length() - result.length();
-                            while (leftLength > 0) {
-                                result += nums[nums.length - 1];
-                                leftLength--;
-                            }
-                            return Integer.valueOf(result);
-                        }
-                    }
-                    return Integer.valueOf(repeat(nums[nums.length - 1], aimStr.length() - 1));
-                }
+                break;
             }
         }
-
-        // 能组装出这个数来
-
-
-        return -2;
+        int res = findNexMin(value);
+        if (res > -1 && i != aimStr.length() - 1) {
+            result += res;
+            int leftLength = aimStr.length() - result.length();
+            return Integer.valueOf(result + repeat(nums[nums.length - 1], leftLength));
+        } else {
+            // 没有找到更小的值。往前回溯
+            for (int j = i; j >= 0; j--) {
+                // 代表的是 前一个字符。
+                int tempValue = aimStr.charAt(j) - '0';
+                // 比 第 j 个 数字小的索引。
+                int nextIndex = findNexMin(tempValue);
+                if (nextIndex > -1) {
+                    // 往前回溯
+                    // 往前找，找到j+1个数值
+                    result = result.substring(0, j);
+                    // 找到了
+                    result += nextIndex;
+                    int leftLength = aimStr.length() - result.length();
+                    while (leftLength > 0) {
+                        result += nums[nums.length - 1];
+                        leftLength--;
+                    }
+                    return Integer.valueOf(result);
+                }
+            }
+            return Integer.valueOf(repeat(nums[nums.length - 1], aimStr.length() - 1));
+        }
     }
 
     public static int findNexMin(int index) {
@@ -134,6 +135,7 @@ public class D {
         return -1;
     }
 
+    // num 数组重复 time次数
     public static String repeat(int num, Integer time) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < time; i++) {
@@ -142,5 +144,36 @@ public class D {
         return result.toString();
     }
 
+
+    public static int find(int[] array, int n) {
+        int depth = 0;
+        List<Integer> list = new ArrayList<>();
+        int path = 0;
+        char[] digits = Integer.toString(n).toCharArray();
+        dfs(n, depth, digits, array, path, list);
+        int result = 0;
+        Collections.sort(list);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) >= n) {
+                result = list.get(i - 1);
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static void dfs(int n, int depth, char[] digits, int[] array, int path, List<Integer> list) {
+        if (depth == digits.length) {
+            list.add(path);
+            return;
+        }
+
+        for (int i = 0; i < array.length; i++) {
+            path = path * 10 + array[i];
+            dfs(n, depth + 1, digits, array, path, list);
+            path = path / 10;
+        }
+
+    }
 
 }
