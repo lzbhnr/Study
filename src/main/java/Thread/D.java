@@ -17,7 +17,7 @@ public class D {
 
         System.out.println("-----");
 
-        nums = new int[]{1, 2, 5, 4};
+        nums = new int[]{1, 2, 3, 5, 4};
         x = 2543;
         result = getMax(nums, x);
         System.out.println(result);
